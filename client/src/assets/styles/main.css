@@ -1,0 +1,311 @@
+/* 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+#app {
+  height: 100%;
+}
+
+/* 智学主题色彩 */
+:root {
+  --primary-color: #409EFF;
+  --success-color: #67C23A;
+  --warning-color: #E6A23C;
+  --danger-color: #F56C6C;
+  --info-color: #909399;
+  
+  --text-primary: #303133;
+  --text-regular: #606266;
+  --text-secondary: #909399;
+  --text-placeholder: #C0C4CC;
+  
+  --border-base: #DCDFE6;
+  --border-light: #E4E7ED;
+  --border-lighter: #EBEEF5;
+  --border-extra-light: #F2F6FC;
+  
+  --fill-base: #F0F2F5;
+  --fill-light: #F5F7FA;
+  --fill-lighter: #FAFAFA;
+  --fill-extra-light: #FAFCFF;
+}
+
+/* 主布局样式 */
+.main-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-header {
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.main-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+}
+
+.sidebar {
+  width: 240px;
+  background: var(--fill-lighter);
+  border-right: 1px solid var(--border-light);
+  overflow-y: auto;
+}
+
+.content-area {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: #fff;
+}
+
+/* 卡片样式 */
+.smart-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: box-shadow 0.3s ease;
+}
+
+.smart-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* 科目卡片 */
+.subject-card {
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.subject-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.subject-card.active {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.subject-card.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.subject-card .subject-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: var(--primary-color);
+}
+
+.subject-card.active .subject-icon {
+  color: white;
+}
+
+/* 数学特色样式 */
+.math-theme {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.physics-theme {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.chemistry-theme {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.biology-theme {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* 题目展示 */
+.question-card {
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.question-content {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.question-options {
+  margin: 20px 0;
+}
+
+.question-option {
+  padding: 12px 16px;
+  margin: 8px 0;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.question-option:hover {
+  border-color: var(--primary-color);
+  background: var(--fill-extra-light);
+}
+
+.question-option.selected {
+  border-color: var(--primary-color);
+  background: #ecf5ff;
+  color: var(--primary-color);
+}
+
+.question-option.correct {
+  border-color: var(--success-color);
+  background: #f0f9ff;
+  color: var(--success-color);
+}
+
+.question-option.wrong {
+  border-color: var(--danger-color);
+  background: #fef0f0;
+  color: var(--danger-color);
+}
+
+/* 进度条样式 */
+.progress-ring {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.progress-text {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* 知识点标签 */
+.knowledge-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  margin: 4px;
+  background: var(--fill-light);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  font-size: 12px;
+  color: var(--text-regular);
+}
+
+.knowledge-tag.mastered {
+  background: #f0f9ff;
+  border-color: var(--success-color);
+  color: var(--success-color);
+}
+
+.knowledge-tag.learning {
+  background: #fff7ed;
+  border-color: var(--warning-color);
+  color: var(--warning-color);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+  
+  .content-area {
+    padding: 16px;
+  }
+  
+  .subject-card {
+    padding: 16px;
+  }
+  
+  .question-card {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-content {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    order: 2;
+  }
+  
+  .content-area {
+    order: 1;
+    padding: 12px;
+  }
+}
+
+/* 动画效果 */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.3s ease;
+}
+
+.slide-enter-from {
+  transform: translateX(-100%);
+}
+
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+/* LaTeX 数学公式样式 */
+.katex {
+  font-size: 1.1em !important;
+}
+
+.katex-display {
+  margin: 16px 0 !important;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--fill-lighter);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-base);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-placeholder);
+}
