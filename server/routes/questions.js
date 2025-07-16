@@ -300,7 +300,7 @@ router.post('/:id/answer', authenticateToken, async (req, res) => {
     }
     
     const question = questions[0];
-    const correctAnswer = JSON.parse(question.answer);
+    const correctAnswer = question.answer; // Already parsed by mysql2
     
     // 判断答案正确性
     let isCorrect = false;
