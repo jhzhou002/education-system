@@ -19,11 +19,11 @@ npm run install:all
 
 # 3. 配置环境变量
 cp server/.env.example server/.env
-# 编辑 server/.env 文件，配置数据库连接信息
+# 配置文件已预设好数据库和AI密钥，可直接使用
 
-# 4. 创建数据库
+# 4. 创建数据库（如果尚未创建）
 mysql -u root -p
-CREATE DATABASE smartlearn_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE question CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 exit
 
 # 5. 初始化数据库

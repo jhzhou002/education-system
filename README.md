@@ -128,14 +128,8 @@ cd ../client && npm install
 # 复制环境配置文件
 cp server/.env.example server/.env
 
-# 编辑数据库配置，修改以下配置项：
-# - DB_HOST: 数据库主机地址
-# - DB_USER: 数据库用户名  
-# - DB_PASSWORD: 数据库密码
-# - DB_NAME: 数据库名称
-# - JWT_SECRET: JWT密钥（生产环境必须修改）
-# - AI API密钥: 各个AI服务的API密钥
-vim server/.env
+# 配置文件已预设好数据库连接和AI密钥，可直接使用
+# 如需修改，请编辑 server/.env 文件
 ```
 
 ### 4. 初始化数据库
