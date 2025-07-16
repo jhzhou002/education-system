@@ -9,9 +9,7 @@ const dbConfig = {
   port: process.env.DB_PORT,
   charset: 'utf8mb4',
   timezone: '+08:00',
-  connectionLimit: 10,
-  acquireTimeout: 60000,
-  timeout: 60000
+  connectionLimit: 10
 };
 
 // 创建连接池
