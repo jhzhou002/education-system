@@ -111,7 +111,7 @@ const handleUserCommand = (command) => {
       router.push('/dashboard/profile')
       break
     case 'settings':
-      ElMessage.info('设置功能开发中...')
+      router.push('/dashboard/settings')
       break
     case 'logout':
       ElMessageBox.confirm('确认要退出登录吗？', '提示', {

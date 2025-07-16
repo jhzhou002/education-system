@@ -56,11 +56,12 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { subjectAPI } from '../utils/api'
 import { Operation, Lightning, Monitor, Orange } from '@element-plus/icons-vue'
 
 const route = useRoute()
+const router = useRouter()
 const loading = ref(true)
 const subject = ref(null)
 const chapters = ref([])
@@ -82,7 +83,10 @@ const getSubjectTheme = (code) => {
 }
 
 const startChapter = (chapterId) => {
-  ElMessage.success('功能开发中...')
+  console.log('开始学习章节:', chapterId)
+  // 跳转到该章节的题目练习
+  router.push(`/dashboard/practice?chapter_id=${chapterId}&subject_id=${route.params.id}`)
+  ElMessage.success('正在加载该章节的练习题目...')
 }
 
 onMounted(async () => {

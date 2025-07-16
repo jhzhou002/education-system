@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const { query } = require('../config/database');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
@@ -256,6 +257,50 @@ router.get('/:id/stats', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('获取学习统计错误:', error);
     res.status(500).json({ error: '获取学习统计失败' });
+  }
+});
+
+// 修改密码
+router.post('/change-password', authenticateToken, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.id;
+    
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: '当前密码和新密码都是必填项' });
+    }
+    
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: '新密码长度至少6位' });
+    }
+    
+    // 获取用户当前密码哈希
+    const users = await query('SELECT password_hash FROM sl_users WHERE id = ?', [userId]);
+    if (users.length === 0) {
+      return res.status(404).json({ error: '用户不存在' });
+    }
+    
+    // 验证当前密码
+    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, users[0].password_hash);
+    if (!isCurrentPasswordValid) {
+      return res.status(400).json({ error: '当前密码不正确' });
+    }
+    
+    // 生成新密码哈希
+    const newPasswordHash = await bcrypt.hash(newPassword, 10);
+    
+    // 更新密码
+    await query(
+      'UPDATE sl_users SET password_hash = ?, updated_at = NOW() WHERE id = ?',
+      [newPasswordHash, userId]
+    );
+    
+    res.json({
+      message: '密码修改成功'
+    });
+  } catch (error) {
+    console.error('修改密码错误:', error);
+    res.status(500).json({ error: '修改密码失败' });
   }
 });
 

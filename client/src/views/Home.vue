@@ -71,7 +71,7 @@
         <div class="content-card">
           <div class="card-header">
             <h3>科目学习进度</h3>
-            <el-button type="primary" text @click="$router.push('/dashboard/subjects')">
+            <el-button type="primary" link @click="$router.push('/dashboard/subjects')">
               查看全部
             </el-button>
           </div>
@@ -109,7 +109,7 @@
         <div class="content-card">
           <div class="card-header">
             <h3>为您推荐</h3>
-            <el-button type="primary" text @click="$router.push('/dashboard/practice')">
+            <el-button type="primary" link @click="$router.push('/dashboard/practice')">
               更多练习
             </el-button>
           </div>
@@ -387,6 +387,20 @@ onMounted(() => {
   padding: 40px;
   margin-bottom: 30px;
   color: white;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
 }
 
 .banner-content {
@@ -427,6 +441,16 @@ onMounted(() => {
 
 .stat-card:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(180deg);
+  }
 }
 
 .stat-icon {
@@ -495,7 +519,9 @@ onMounted(() => {
 
 .subject-progress-item:hover {
   border-color: #409eff;
-  background: #f8f9fa;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(64, 158, 255, 0.2);
 }
 
 .subject-info {

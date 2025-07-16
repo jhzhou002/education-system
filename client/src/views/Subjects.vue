@@ -69,7 +69,7 @@
           
           <el-button
             v-if="subject.is_active"
-            type="text"
+            link
             size="small"
             @click.stop="$router.push(`/dashboard/practice?subject_id=${subject.id}`)"
           >

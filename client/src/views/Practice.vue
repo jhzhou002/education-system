@@ -64,7 +64,8 @@ const total = ref(0)
 
 const filters = reactive({
   subject_id: '',
-  difficulty: ''
+  difficulty: '',
+  chapter_id: ''
 })
 
 const getDifficultyType = (difficulty) => {
@@ -104,6 +105,18 @@ onMounted(async () => {
   try {
     const response = await subjectAPI.getSubjects()
     subjects.value = response.subjects
+    
+    // 读取URL参数
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.get('subject_id')) {
+      filters.subject_id = urlParams.get('subject_id')
+    }
+    if (urlParams.get('chapter_id')) {
+      filters.chapter_id = urlParams.get('chapter_id')
+    }
+    if (urlParams.get('difficulty')) {
+      filters.difficulty = parseInt(urlParams.get('difficulty'))
+    }
   } catch (error) {
     ElMessage.error('获取科目失败')
   }

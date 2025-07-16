@@ -17,6 +17,8 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
+    // 添加请求ID用于调试
+    config.headers['X-Request-ID'] = Date.now() + Math.random()
     return config
   },
   (error) => {
@@ -35,9 +37,21 @@ api.interceptors.response.use(
       
       switch (status) {
         case 401:
-          localStorage.removeItem('token')
-          window.location.href = '/login'
-          ElMessage.error('登录已过期，请重新登录')
+          // 避免重复处理401错误
+          const currentToken = localStorage.getItem('token')
+          if (currentToken && !window._handling401) {
+            window._handling401 = true
+            localStorage.removeItem('token')
+            ElMessage.error('登录已过期，请重新登录')
+            
+            // 延迟清除标志，避免过于频繁的重定向
+            setTimeout(() => {
+              window._handling401 = false
+              if (window.location.pathname !== '/login') {
+                window.location.href = '/login'
+              }
+            }, 2000)
+          }
           break
         case 403:
           ElMessage.error('权限不足')
@@ -46,7 +60,7 @@ api.interceptors.response.use(
           ElMessage.error('请求的资源不存在')
           break
         case 500:
-          ElMessage.error('服务器内部错误')
+          ElMessage.error(data?.error || '服务器内部错误')
           break
         default:
           ElMessage.error(data?.error || '请求失败')
@@ -74,7 +88,8 @@ export const userAPI = {
   getUsers: (params) => api.get('/users', { params }),
   getUserById: (id) => api.get(`/users/${id}`),
   updateUser: (id, data) => api.put(`/users/${id}`, data),
-  getUserStats: (id) => api.get(`/users/${id}/stats`)
+  getUserStats: (id) => api.get(`/users/${id}/stats`),
+  changePassword: (data) => api.post('/users/change-password', data)
 }
 
 // 科目相关API
