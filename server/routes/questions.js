@@ -78,8 +78,53 @@ router.get('/', authenticateToken, async (req, res) => {
     }
     
     // 获取总数
-    const countSql = sql.replace(/SELECT.*?FROM/, 'SELECT COUNT(*) as total FROM');
-    const totalResult = await query(countSql, [...params]);
+    const countSql = `
+      SELECT COUNT(*) as total
+      FROM sl_questions q
+      LEFT JOIN sl_subjects s ON q.subject_id = s.id
+      LEFT JOIN sl_chapters c ON q.chapter_id = c.id
+      WHERE (q.status = '已通过' OR q.status IS NULL)
+    `;
+    
+    // 添加筛选条件到count查询
+    let countParams = [];
+    let countWhere = '';
+    
+    if (subject_id && subject_id !== '') {
+      countWhere += ' AND q.subject_id = ?';
+      countParams.push(subject_id);
+    }
+    
+    if (type && type !== '') {
+      countWhere += ' AND q.type = ?';
+      countParams.push(type);
+    }
+    
+    if (difficulty && difficulty !== '') {
+      countWhere += ' AND q.difficulty = ?';
+      countParams.push(difficulty);
+    }
+    
+    if (grade && grade !== '') {
+      countWhere += ' AND q.grade = ?';
+      countParams.push(grade);
+    }
+    
+    if (chapter_id && chapter_id !== '') {
+      countWhere += ' AND q.chapter_id = ?';
+      countParams.push(chapter_id);
+    }
+    
+    if (knowledge_point_id && knowledge_point_id !== '') {
+      countWhere += ` AND q.id IN (
+        SELECT qkp.question_id FROM sl_question_knowledge_points qkp 
+        WHERE qkp.knowledge_point_id = ?
+      )`;
+      countParams.push(knowledge_point_id);
+    }
+    
+    const finalCountSql = countSql + countWhere;
+    const totalResult = await query(finalCountSql, countParams);
     const total = totalResult[0].total;
     
     // 获取题目列表
@@ -90,15 +135,20 @@ router.get('/', authenticateToken, async (req, res) => {
     
     // 获取每个题目的知识点
     for (let question of questions) {
-      const knowledgePoints = await query(`
-        SELECT kp.id, kp.name, qkp.weight, qkp.is_primary
-        FROM sl_question_knowledge_points qkp
-        JOIN sl_knowledge_points kp ON qkp.knowledge_point_id = kp.id
-        WHERE qkp.question_id = ?
-        ORDER BY qkp.is_primary DESC, qkp.weight DESC
-      `, [question.id]);
-      
-      question.knowledge_points = knowledgePoints;
+      try {
+        const knowledgePoints = await query(`
+          SELECT kp.id, kp.name, COALESCE(qkp.weight, 1.0) as weight, COALESCE(qkp.is_primary, 0) as is_primary
+          FROM sl_question_knowledge_points qkp
+          JOIN sl_knowledge_points kp ON qkp.knowledge_point_id = kp.id
+          WHERE qkp.question_id = ?
+          ORDER BY qkp.is_primary DESC, qkp.weight DESC
+        `, [question.id]);
+        
+        question.knowledge_points = knowledgePoints || [];
+      } catch (error) {
+        console.warn(`获取题目 ${question.id} 的知识点失败:`, error);
+        question.knowledge_points = [];
+      }
     }
     
     res.json({

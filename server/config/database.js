@@ -32,10 +32,18 @@ async function testConnection() {
 // 执行查询
 async function query(sql, params = []) {
   try {
-    const [results] = await pool.execute(sql, params);
+    // 确保参数是数组
+    if (!Array.isArray(params)) {
+      params = [params];
+    }
+    
+    // 尝试使用query而不是execute来避免预处理语句问题
+    const [results] = await pool.query(sql, params);
     return results;
   } catch (error) {
     console.error('数据库查询错误:', error);
+    console.error('SQL:', sql);
+    console.error('参数:', params);
     throw error;
   }
 }
