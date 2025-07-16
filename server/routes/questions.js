@@ -19,18 +19,27 @@ router.get('/', authenticateToken, async (req, res) => {
       limit = 20 
     } = req.query;
     
-    const offset = (page - 1) * limit;
+    console.log('获取题目列表参数:', { subject_id, type, difficulty, grade, chapter_id, knowledge_point_id, page, limit });
+    
+    const offset = (parseInt(page) - 1) * parseInt(limit);
     
     let sql = `
-      SELECT q.id, q.subject_id, q.type, q.content, q.content_format,
-             q.options, q.answer, q.analysis, q.difficulty, q.grade,
-             q.exam_type, q.estimated_time, q.source, q.created_at,
-             s.display_name as subject_name,
-             c.title as chapter_title
+      SELECT q.id, q.subject_id, q.type, q.content, 
+             COALESCE(q.content_format, 'text') as content_format,
+             COALESCE(q.options, '[]') as options, 
+             q.answer, 
+             COALESCE(q.analysis, '') as analysis, 
+             q.difficulty, q.grade,
+             COALESCE(q.exam_type, '') as exam_type, 
+             COALESCE(q.estimated_time, 180) as estimated_time, 
+             COALESCE(q.source, '未知') as source, 
+             q.created_at,
+             COALESCE(s.display_name, '未知科目') as subject_name,
+             COALESCE(c.title, '未知章节') as chapter_title
       FROM sl_questions q
       LEFT JOIN sl_subjects s ON q.subject_id = s.id
       LEFT JOIN sl_chapters c ON q.chapter_id = c.id
-      WHERE q.status = '已通过'
+      WHERE (q.status = '已通过' OR q.status IS NULL)
     `;
     
     const params = [];
