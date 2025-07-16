@@ -35,32 +35,32 @@ router.get('/', authenticateToken, async (req, res) => {
     
     const params = [];
     
-    if (subject_id) {
+    if (subject_id && subject_id !== '') {
       sql += ' AND q.subject_id = ?';
       params.push(subject_id);
     }
     
-    if (type) {
+    if (type && type !== '') {
       sql += ' AND q.type = ?';
       params.push(type);
     }
     
-    if (difficulty) {
+    if (difficulty && difficulty !== '') {
       sql += ' AND q.difficulty = ?';
       params.push(difficulty);
     }
     
-    if (grade) {
+    if (grade && grade !== '') {
       sql += ' AND q.grade = ?';
       params.push(grade);
     }
     
-    if (chapter_id) {
+    if (chapter_id && chapter_id !== '') {
       sql += ' AND q.chapter_id = ?';
       params.push(chapter_id);
     }
     
-    if (knowledge_point_id) {
+    if (knowledge_point_id && knowledge_point_id !== '') {
       sql += ` AND q.id IN (
         SELECT qkp.question_id FROM sl_question_knowledge_points qkp 
         WHERE qkp.knowledge_point_id = ?
@@ -70,14 +70,14 @@ router.get('/', authenticateToken, async (req, res) => {
     
     // 获取总数
     const countSql = sql.replace(/SELECT.*?FROM/, 'SELECT COUNT(*) as total FROM');
-    const totalResult = await query(countSql, params);
+    const totalResult = await query(countSql, [...params]);
     const total = totalResult[0].total;
     
     // 获取题目列表
     sql += ' ORDER BY q.created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), parseInt(offset));
+    const queryParams = [...params, parseInt(limit), parseInt(offset)];
     
-    const questions = await query(sql, params);
+    const questions = await query(sql, queryParams);
     
     // 获取每个题目的知识点
     for (let question of questions) {
