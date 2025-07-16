@@ -94,7 +94,7 @@ router.beforeEach((to, from, next) => {
   }
   
   // 已登录用户访问登录/注册页面，重定向到首页
-  if (!to.meta.requiresAuth && authStore.isAuthenticated && ['Login', 'Register'].includes(to.name)) {
+  if (to.meta.requiresAuth === false && authStore.isAuthenticated && ['Login', 'Register'].includes(to.name)) {
     next('/dashboard')
     return
   }

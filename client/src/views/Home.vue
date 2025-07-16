@@ -226,10 +226,10 @@ import {
   EditPen,
   Trophy,
   Star,
-  Calculator,
+  Operation,
   Lightning,
-  Cpu,
-  Grape,
+  Monitor,
+  Orange,
   Clock,
   Check,
   Close
@@ -256,12 +256,12 @@ const planItems = reactive({
 // 获取科目图标
 const getSubjectIcon = (code) => {
   const icons = {
-    math: Calculator,
+    math: Operation,
     physics: Lightning,
-    chemistry: Cpu,
-    biology: Grape
+    chemistry: Monitor,
+    biology: Orange
   }
-  return icons[code] || Calculator
+  return icons[code] || Operation
 }
 
 // 获取科目主题

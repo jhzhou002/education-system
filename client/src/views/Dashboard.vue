@@ -4,7 +4,7 @@
     <header class="dashboard-header">
       <div class="header-left">
         <h1 class="logo">
-          <el-icon><Calculator /></el-icon>
+          <el-icon><Operation /></el-icon>
           智学
         </h1>
       </div>
@@ -84,7 +84,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../store/auth'
 import {
-  Calculator,
+  Operation,
   House,
   Notebook,
   EditPen,

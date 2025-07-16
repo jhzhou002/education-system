@@ -58,7 +58,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { subjectAPI } from '../utils/api'
-import { Calculator, Lightning, Cpu, Grape } from '@element-plus/icons-vue'
+import { Operation, Lightning, Monitor, Orange } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const loading = ref(true)
@@ -67,8 +67,8 @@ const chapters = ref([])
 const stats = ref({})
 
 const getSubjectIcon = (code) => {
-  const icons = { math: Calculator, physics: Lightning, chemistry: Cpu, biology: Grape }
-  return icons[code] || Calculator
+  const icons = { math: Operation, physics: Lightning, chemistry: Monitor, biology: Orange }
+  return icons[code] || Operation
 }
 
 const getSubjectTheme = (code) => {

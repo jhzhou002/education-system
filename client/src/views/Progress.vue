@@ -168,10 +168,10 @@ import {
   Trophy,
   EditPen,
   Star,
-  Calculator,
+  Operation,
   Lightning,
-  Cpu,
-  Grape
+  Monitor,
+  Orange
 } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
@@ -183,12 +183,12 @@ const learningPath = ref({ recommended_next: [] })
 
 const getSubjectIcon = (code) => {
   const icons = {
-    math: Calculator,
+    math: Operation,
     physics: Lightning,
-    chemistry: Cpu,
-    biology: Grape
+    chemistry: Monitor,
+    biology: Orange
   }
-  return icons[code] || Calculator
+  return icons[code] || Operation
 }
 
 const getSubjectTheme = (code) => {

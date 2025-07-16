@@ -9,7 +9,7 @@
     <div class="login-card">
       <div class="login-header">
         <h1 class="logo">
-          <el-icon class="logo-icon"><Calculator /></el-icon>
+          <el-icon class="logo-icon"><Operation /></el-icon>
           智学
         </h1>
         <p class="subtitle">智能学习平台 · 个性化教育</p>
@@ -86,7 +86,7 @@
           <el-button
             size="small"
             @click="setDemoAccount('admin')"
-            icon="Crown"
+            icon="Trophy"
           >
             管理员
           </el-button>
@@ -100,7 +100,13 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store/auth'
-import { Calculator, User, Lock, UserFilled, Crown } from '@element-plus/icons-vue'
+import { 
+  Operation, 
+  User, 
+  Lock, 
+  UserFilled, 
+  Trophy 
+} from '@element-plus/icons-vue'
 
 const router = useRouter()
 const authStore = useAuthStore()

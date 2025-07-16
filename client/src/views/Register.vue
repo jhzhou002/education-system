@@ -9,7 +9,7 @@
     <div class="register-card">
       <div class="register-header">
         <h1 class="logo">
-          <el-icon class="logo-icon"><Calculator /></el-icon>
+          <el-icon class="logo-icon"><Operation /></el-icon>
           加入智学
         </h1>
         <p class="subtitle">开启您的智能学习之旅</p>
@@ -146,7 +146,7 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store/auth'
-import { Calculator } from '@element-plus/icons-vue'
+import { Operation } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
