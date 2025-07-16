@@ -308,7 +308,7 @@ router.post('/:id/answer', authenticateToken, async (req, res) => {
     
     if (question.type === '单选' || question.type === '填空') {
       isCorrect = JSON.stringify(user_answer) === JSON.stringify(correctAnswer);
-      score = isCorrect ? 100 : 0;
+      score = isCorrect ? 1.0 : 0.0;  // 使用1.0表示100%正确
     } else if (question.type === '多选') {
       // 多选题按部分分计算
       const userSet = new Set(Array.isArray(user_answer) ? user_answer : [user_answer]);
@@ -317,9 +317,12 @@ router.post('/:id/answer', authenticateToken, async (req, res) => {
       const intersection = new Set([...userSet].filter(x => correctSet.has(x)));
       const union = new Set([...userSet, ...correctSet]);
       
-      score = union.size > 0 ? Math.round((intersection.size / union.size) * 100) : 0;
+      score = union.size > 0 ? (intersection.size / union.size) : 0;
       isCorrect = userSet.size === correctSet.size && intersection.size === correctSet.size;
     }
+    
+    // 确保score在有效范围内 (0-1.0)
+    score = Math.min(Math.max(score, 0), 1.0);
     
     // 记录答题结果
     await query(`
@@ -345,7 +348,7 @@ router.post('/:id/answer', authenticateToken, async (req, res) => {
       message: '答案提交成功',
       result: {
         is_correct: isCorrect,
-        score,
+        score: Math.round(score * 100), // 转换为0-100的整数显示
         correct_answer: correctAnswer,
         explanation: isCorrect ? '回答正确！' : '回答错误，请查看解析'
       }
